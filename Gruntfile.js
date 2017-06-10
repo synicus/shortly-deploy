@@ -3,6 +3,16 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
+      options: {
+        // define a string to put between each file in the concatenated output
+        separator: ';'
+      },
+      dist: {
+        // the files to concatenate
+        src: ['shortly-deploy/**/*.js'],
+        // the location of the resulting JS file
+        dest: 'dist/<%= pkg.name %>.js'
+      }
     },
 
     mochaTest: {
@@ -21,6 +31,7 @@ module.exports = function(grunt) {
     },
 
     uglify: {
+      
     },
 
     eslint: {
@@ -51,6 +62,7 @@ module.exports = function(grunt) {
 
     shell: {
       prodServer: {
+        command: 'git push live master'
       }
     },
   });
@@ -76,12 +88,13 @@ module.exports = function(grunt) {
     'mochaTest'
   ]);
 
-  grunt.registerTask('build', [
+  grunt.registerTask('build', [ 'concat', 'uglify'
   ]);
 
   grunt.registerTask('upload', function(n) {
     if (grunt.option('prod')) {
       // add your production server task here
+      grunt.task.run([ 'shell' ]);
     } else {
       grunt.task.run([ 'server-dev' ]);
     }
