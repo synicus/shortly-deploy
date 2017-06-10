@@ -9,7 +9,7 @@ module.exports = function(grunt) {
       },
       dist: {
         // the files to concatenate
-        src: ['shortly-deploy/**/*.js'],
+        src: ['public/**/*.js'],
         // the location of the resulting JS file
         dest: 'dist/<%= pkg.name %>.js'
       }
@@ -31,12 +31,21 @@ module.exports = function(grunt) {
     },
 
     uglify: {
-      
+      options: {
+          // the banner is inserted at the top of the output
+          banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+        },
+        dist: {
+          files: {
+            'dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
+          }
+        }
     },
 
     eslint: {
       target: [
         // Add list of files to lint here
+        'Gruntfile.js', 'public/**/*.js', 'test/**/*.js'
       ]
     },
 
