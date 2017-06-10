@@ -33,13 +33,13 @@ module.exports = function(grunt) {
     uglify: {
       options: {
           // the banner is inserted at the top of the output
-          banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
-        },
-        dist: {
-          files: {
-            'dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
-          }
+        banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+      },
+      dist: {
+        files: {
+          'dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
         }
+      }
     },
 
     eslint: {
@@ -94,7 +94,7 @@ module.exports = function(grunt) {
   ////////////////////////////////////////////////////
 
   grunt.registerTask('test', [
-    'mochaTest'
+    'mochaTest', 'eslint'
   ]);
 
   grunt.registerTask('build', [ 'concat', 'uglify'
@@ -111,6 +111,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('deploy', [
     // add your deploy tasks here
+    'test', 'build', 'upload'
   ]);
 
 
